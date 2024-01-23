@@ -1,0 +1,401 @@
+@mixin flex($direction: row, $justify: center, $align: center) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justify;
+    align-items: $align;
+}
+
+@mixin full-screen {
+    width: 100vw;
+    height: 100vh;
+}
+
+@mixin full {
+    width: 100%;
+    height: 100%;
+}
+
+@mixin shadow {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+}
+
+@mixin padding($padding: 40px) {
+    padding: $padding;
+}
+
+@mixin backdrop-filter {
+    backdrop-filter: blur(10px);
+}
+
+@mixin border-radius($radius: 10px) {
+    border-radius: $radius;
+}
+
+@mixin border-rounded {
+    border-radius: 50%;
+}
+
+@mixin transition($transition: all) {
+    transition: $transition 100ms ease-in-out;
+}
+
+@mixin translateCenter {
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+#home {
+    @include flex();
+    @include full();
+    @include padding();
+
+    gap: 40px;
+    background-color: rgb(69, 69, 69);
+
+    p{
+        font-size: 20px;
+        font-weight: bold;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info {
+        @include flex(column, flex-start);
+        @include border-radius();
+        @include padding();
+
+        height: 100%;
+        gap: 40px;
+        background-color: bisque;
+
+        .unplaced-stones {
+            @include flex(row);
+            gap: 20px;
+
+            .figure {
+                @include flex();
+
+                &.black {
+                    color: white;
+                }
+
+                p {
+                    font-size: 24px;
+                    font-weight: bold;
+                }
+            }
+        }
+
+        .lastEval {
+            @include flex(column);
+
+            p {
+                font-size: 20px;
+                font-weight: bold;
+                padding: 0;
+                margin: 0;
+            }
+        }
+    }
+
+    .mica-container {
+        @include border-radius();
+        @include padding();
+
+        background-color:bisque;
+
+        .mica {
+            @include full();
+
+            position: relative;
+            .point {
+                @include border-radius(50%);
+                @include transition(background-color);
+                @include flex();
+                @include translateCenter();
+
+                width: 48px;
+                height: 48px;
+
+                z-index: 10;
+
+                cursor: pointer;
+
+                .point-inner {
+                    @include border-rounded();
+                    @include transition();
+
+                    width: 16px;
+                    height: 16px;
+                    background-color: rgb(69, 69, 69);
+                }
+
+                &.nearby {
+                    .point-inner {
+                        transform: scale(1.2);
+                        background-color: rgb(169, 48, 169);
+                    }
+
+                    &:hover {
+                        .point-inner {
+                            background-color: rgb(196, 64, 196);
+                        }
+                    }
+
+                    &:active {
+                        .point-inner {
+                            background-color: rgb(144, 32, 144);
+                        }
+                    }
+                }
+
+                &:hover {
+                    .point-inner {
+                        background-color: rgb(96, 96, 96);
+                    }
+                }
+
+                &:active {
+                    .point-inner {
+                        background-color: rgb(48, 48, 48);
+                    }
+                }
+            }
+
+            .connection {
+                position: absolute;
+                border: 2px solid gray;
+
+                translate: -2px -2px;
+            }
+        }
+    }
+
+    .figure {
+        @include shadow();
+        @include backdrop-filter();
+        @include transition();
+        @include border-rounded();
+
+        width: 48px;
+        height: 48px;
+
+        z-index: 20;
+
+        cursor: pointer;
+
+        &.absolutely-positioned {
+            position: absolute;
+            position: absolute;
+            transform: translate(-50%, -50%);
+        }
+
+        &.selected {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        &.black {
+            background-color: rgba(0, 0, 0, 0.8);
+
+            &.isInFormedMill {
+                background-color: rgba(0, 32, 0, 0.8);
+            }
+
+            &.canRemove {
+                background-color: rgba(69, 0, 0, 0.5);
+            }
+        }
+
+        &.white {
+            background-color: rgba(255, 255, 255, 0.5);
+
+            &.isInFormedMill {
+                background-color: rgba(222, 256, 222, 0.5);
+            }
+
+            &.canRemove {
+                background-color: rgba(255, 196, 196, 0.5);
+            }
+        }
+
+        &:hover {
+            transform: brightness(1.2);
+        }
+
+        &:active {
+            transform: brightness(0.8);
+        }
+    }
+}
+
+.full-screen-overlay {
+    @include flex();
+    @include full-screen();
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.game-type-chooser {
+    @include flex();
+    @include full();
+
+    .game-type-cards {
+        @include flex();
+
+        gap: 20px;
+
+        .game-card {
+            @include shadow();
+            @include backdrop-filter();
+            @include border-radius();
+            @include flex();
+            @include transition();
+
+            width: 200px;
+            height: 200px;
+
+            background-color: rgba(255, 255, 255, 0.5);
+
+            cursor: pointer;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+
+            &:active {
+                transform: scale(0.95);
+            }
+        }
+    }
+}
+
+.difficulty-chooser {
+    @include flex(column);
+    @include full();
+
+    .player-difficulty {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .difficulty-cards {
+        @include flex();
+
+        gap: 20px;
+
+        .difficulty-card {
+            @include shadow();
+            @include backdrop-filter();
+            @include border-radius();
+            @include flex();
+            @include transition();
+
+            width: 200px;
+            height: 200px;
+
+            background-color: rgba(255, 255, 255, 0.5);
+
+            text-transform: capitalize;
+
+            cursor: pointer;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+
+            &:active {
+                transform: scale(0.95);
+            }
+        }
+    }
+}
+
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid rgba($color: #ffffff, $alpha: 0.75);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+// Responsive CSS
+@media (max-aspect-ratio: 1/1) {
+    #home {
+        flex-direction: column;
+        padding: 20px;
+
+        .info {
+            width: 100%;
+            height: auto;
+
+            padding: 20px;
+
+            flex-direction: column;
+
+            .unplaced-stones {
+                flex-direction: row;
+                gap: 20px;
+            }
+
+            .lastEval {
+                flex-direction: row;
+            }
+        }
+    }
+
+    .game-type-cards {
+        flex-direction: column !important;
+    }
+
+    .difficulty-cards {
+        flex-direction: column !important;
+    }
+
+    .mica-container {
+        width: 100%;
+        aspect-ratio: 1;
+    }
+}
+
+@media (min-aspect-ratio: 1/1) {
+    .mica-container {
+        height: 100%;
+        aspect-ratio: 1;
+    }
+}
+
+@media (max-width: 540px) {
+    .figure {
+        width: 32px !important;
+        height: 32px !important;
+    }
+
+    .point {
+        width: 32px !important;
+        height: 32px !important;
+
+        .point-inner {
+            width: 12px !important;
+            height: 12px !important;
+        }
+    }
+}
