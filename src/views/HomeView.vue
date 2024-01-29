@@ -572,11 +572,11 @@
     function difficultyToDepth(difficulty: EDifficulty) {
         switch (difficulty) {
             case EDifficulty.Easy:
-                return 3;
+                return 2;
             case EDifficulty.Medium:
-                return 5;
+                return 3;
             case EDifficulty.Hard:
-                return 7;
+                return 3;
             default:
                 return 3;
         }
